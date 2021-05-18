@@ -1,6 +1,15 @@
+---
+title: "Nuevos límites de velocidad en España"
+date: "`r Sys.Date()`"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message=F, warning=F, echo=FALSE)
 library(tidyverse)
 library(extrafont)
-
 theme_default <- theme_set(theme_light())
 theme_update(
     text         = element_text(family = "Ubuntu")
@@ -8,7 +17,40 @@ theme_update(
   , axis.text    = element_text(size = 12)
   , legend.text  = element_text(size = 12))
 
+```
 
+* Entra en vigor: 11 Mayo 2021
+* 30 km/h para las calles con un único carril de circulación para cada sentido.
+* 20 km/h si entre los vehiculos y los peatones no hay diferencia de altura.
+
+# Razones:
+
+* Reducir la siniestralidad vial
+* Reducir la calidad del aire
+* Distancia de frenado:
+  * 30 km/h se necesitan 15 metros - 10% lesion grave o mortal
+  * 50 km/h se necesitan 30 metros - 50% lesion grave o mortal
+* Teoria
+
+# Fallecidos
+
+* En España 418.703 personas murieron en 2019
+* 228 personas murieron atropelladas en ciudad
+* -0.05% de reducción de la mortalidad
+
+# Consecuencias
+
+* Mucha confusión
+* Estrés para el conductor
+* Mas atascos
+* Mas tiempo parados en los semáforos:
+  * más contaminacion
+  * más ruido
+* Afan recaudatorio
+  
+
+
+```{r}
 acc_trafico <- tribble(
   ~zona, ~victimas, ~fallecidos,
   "vias interurbanas", 900, 134,
@@ -43,7 +85,7 @@ acc_trafico %>%
   xlab(NULL) +
   ylab(NULL) +
   labs(
-    title = "Peatones víctimas de acidentes de tráfico",
+    title = "Peatones víctimas de accidentes de tráfico",
     subtitle = "Datos de la DGT 2019",
     caption = "Twitter: @darckula") +
   scale_y_log10() +
@@ -84,7 +126,7 @@ fallecimientos_peaton <-
 fallecimientos_peaton %>% 
   ggplot(aes(zona, fallecidos, fill=tipo)) +
   geom_col(position = "dodge") +
-  scale_fill_brewer(palette = 3, type = "qual", direction = -1) +
+  scale_fill_brewer(palette = 3, type = "seq", direction = 1) +
   geom_text(aes(label = fallecidos)
             , position = position_dodge(width = 1)
             , vjust = "bottom"
@@ -125,3 +167,24 @@ fallecimientos_peaton %>%
             , colour = "black"
             , family = "Ubuntu"
             , size = 5)
+```
+
+# Victimas por Ciudad
+
+* Solo hay 4 provincias con más 20 fallecidos 
+* Teruel, Salamanca y Melilla no presentan ningún fallecido
+
+```{r}
+fallecidos_ciudad <- read_csv(file = "fallecidos_ciudad.csv")
+
+fallecidos_ciudad %>%
+  filter(Provincia != "Total") %>% 
+  ggplot(aes(reorder(Provincia, Fallecidos_Ciudad), Fallecidos_Ciudad)) +
+  geom_col(fill = "#FF00FF") +
+  coord_flip() +
+  xlab(NULL) + ylab(NULL) +
+  labs(
+    title = "Accidentes mortales por provincia (incluye peatones y conductores)",
+    subtitle = "Datos de la DGT 2019",
+    caption = "Twitter: @darckula")
+```
