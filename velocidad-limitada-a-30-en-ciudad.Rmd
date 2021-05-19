@@ -24,24 +24,26 @@ theme_update(
 
 # Intro
 
-* 11 Mayo 2021
-* 50 km/h para calles de dos o más carriles para sentido de la circulación
-* 30 km/h para las calles con un único carril de circulación para cada sentido
-* 20 km/h si entre los vehiculos y los peatones no hay diferencia de altura
+El 11 Mayo 2021 ha entrado en vigor la nueva normativa de circulación que limita la velocidad máxima de los vehiculos en ciudad. El límite actual de 50 km/h se verá rebajado a 30km/h en el 80% de la calles de nuestro pais. 
 
-Segun la dgt, aprox. un 80% de la calles de España reducirán su velocidad de 50 Km/h a 30 km/h
+Los nuevos limites serán: 
+
+* 50 km/h (sin cambios) para las calles de dos o más carriles para cada sentido de la circulación
+* 30 km/h para las calles con un único carril de circulación para cada sentido
+* 20 km/h si entre los vehiculos y los peatones no hay diferencia de altura, es decir, no hay una acera.
 
 # Razones
+
+Las razones que esgrime la DGT para llevar a cabo estas restricciones son:
 
 * Reducir la mortalidad
 * Aumentar la calidad del aire
 * Reducir el ruido ambiental
 
-Los aytos ya tenian medios para limitar la velocidad!!
+Sin embargo, esto ya era posible hasta ahora dado que los aytos ya tenian derecho para limitar la velocidad en determinadas calles, por razones de seguridad o incluso ambientales.
 
 ## Reducir la mortalidad
 
-En 2019, 1496 personas perdieron la vida por un acc. de trafico en Espana. Sin embargo, a pesar de lo tragico del dato, supone un descenso de la mortalidad por 2nd ano consecutivo (no se dispone de informacion en 2020). El numero de peatones fallecidos tambien disminuyo sensiblemente en 2019.
 
 ```{r}
 tit_via = c("municipal" = 4)
@@ -62,9 +64,13 @@ fallecidos <-
 fallecidos %>% 
   rename(TOTAL_FALLECIDOS = TOTAL_MU24H, PEATONES_FALLECIDOS = TOT_PEAT_MU24H) %>% 
   pivot_longer(cols = c("TOTAL_FALLECIDOS", "PEATONES_FALLECIDOS")) %>%
+  group_by(name) %>% 
+  mutate(change_ratio = round(100*(value - lag(value, 1))/value,2)) %>% 
   ggplot() +
   geom_line(aes(x = year, y = value, group = name)) +
   geom_point(aes(x = year, y = value)) +
+  geom_text(aes(x = year, y = value, label = str_c(change_ratio, "%"))
+            , nudge_y = 0, nudge_x = -0.4) +
   facet_wrap(facets = vars(name), scales = "free_y", strip.position = "top") +
   xlab(NULL) + ylab(NULL) +
   labs(
@@ -74,7 +80,8 @@ fallecidos %>%
   )
 ```
 
-En cambio, el numero de peatones que perdieron la vida por un atropello en ciudad ascendio en 2019 en 10 personas, llegando hasta los 162. Este incremento es el 6% que la DGT esgrime como justifacion para la reduccion de los limites de velocidad.
+En 2019, 1496 personas perdieron la vida por un acc. de tráfico en España. Esta cifra es la más baja desde 2016 y supone un descenso del 6.2% desde 2017 (hemos de aclarar que no tenemos datos anteriores y tampoco la DGT ha publicado los datos 2020). Además, el número de peatones atropellados mortalmente también sufrió un descenso en 2019 del 5.21%. Estos datos marcan, por tanto, una tendencia positiva en la lucha contra la mortalidad en carretara.
+
 
 ```{r}
 
@@ -88,9 +95,12 @@ fallecidos_ciudad <-
 fallecidos_ciudad %>% 
   rename(TOTAL_FALLECIDOS = TOTAL_MU24H, PEATONES_FALLECIDOS = TOT_PEAT_MU24H) %>% 
   pivot_longer(cols = c("TOTAL_FALLECIDOS", "PEATONES_FALLECIDOS")) %>%
-  ggplot() +
+  group_by(name) %>% 
+  mutate(change_ratio = round(100*(value - lag(value, 1))/value,2)) %>% ggplot() +
   geom_line(aes(x = year, y = value, group = name)) +
   geom_point(aes(x = year, y = value)) +
+  geom_text(aes(x = year, y = value, label = str_c(change_ratio, "%"))
+            , nudge_y = 0, nudge_x = -0.4) +
   facet_wrap(facets = vars(name), scales = "free_y", strip.position = "top") +
   xlab(NULL) + ylab(NULL) +
   labs(
@@ -101,7 +111,9 @@ fallecidos_ciudad %>%
 ```
 
 
-En cuanto a la distribucion por lugar donde se produjeron los atropellos mortales (ciudad o fuera de ciudad), el siguiente grafico muestra un reparto casi al 50%, con una ligera tendencia hacia la ciudad. Las medidas que ha impuesto el gobierno se centrarian en reducir la mortalidad dentro de la ciudades, pero dejaria sin abordar casi el otro 50% del problema.
+En cambio, el número de peatones que perdieron la vida por un atropello en ciudad ascendio un 6% (10 personas) en 2019, llegando hasta los 162 fallecidos. Este incremento es usado por el gobierno para justificar la reducción de los limites de velocidad en ciudad.
+
+Pero, ¿qué hay de cierto en ello?
 
 
 ```{r}
@@ -119,7 +131,7 @@ raw_data_1 %>%
   scale_fill_brewer(palette = 3, type = "seq", direction = 1) +
     xlab(NULL) + ylab(NULL) +
   labs(
-    title = "Distribución historica de fallecimientos por accidente de tráfico"
+    title = "Distribución historica de peatones fallecidos por localización"
     , subtitle = "Datos de la DGT (cómputo 24 horas)"
     , caption = "\nYouTube: Darckula - en busca de la verdad\nTwitter: @darckula" 
   )
@@ -127,25 +139,17 @@ raw_data_1 %>%
 
 ```
 
-Problemas
+Si los limites de velocidad se establecen para salvar vidas en ciudad, quedarán excluidos de la protección de esta ley los peatones atropellados fuera de la ciudad. Como vemos en el gráfico, los atropellos mortales se distribuyen casi a partes iguales entre ciudad y fuera de ciudad, con una ligera tendencia hacia la ciudad. Por tanto, el primer problema que yo le encuentro a esta ley es que deja sin abordar casi el otro 50% del problema: los atropellados, fuera de ciudad.
 
-Centrandonos en los atropellos en vias urbanas, el argumento que maneja la DGT para justificar la reduccion de la velocidad son:
 
-* Disminucion distancia de frenado:
-  * 30 km/h se necesitan 15 metros
-  * 50 km/h se necesitan 30 metros
-* Disminucion de probabilidad de lession grave o mortal:
+Centrandonos en los atropellos en vias urbanas, la DGT justificar la reducción de la velocidad en base a la probabilidad de sufrir una lesión grave o mortal:
+
   * 50 km/h - 50%
   * 30 km/h - 10%
-* Pero esto es pura teoria:
-  * tiempo de reacción
-  * el tipo de vehículo y estado de conservación
 
-Ademas, pone el foco en evitar lesiones una vez producido el atropello en vez de tratar de evitarlo, para lo cual debemos estudiar la causa de la colision:
-* baja visibilidad
-* no respetar pazo de cebra o semaforo
-* invadir la calzada de forma inadvertida
-* en general, se ha infringido alguna norma?
+Sin embargo, esto, además de ser pura teoría, pone el foco en evitar las lesiones una vez producido el atropello. Si el atropello se produce a menor a velocidad, hay una menor probabilidad de perecer. Pero esto es un argumento peligroso porque presupone que los 162 peatones que perdieron la vida en 2019, fueron atropellados por un vehículo a 50km/h.
+
+No hay evidencia sustentada en los datos existentes que permitan sostener que bajar los limites a 30km/h producirá automaticamente un descenso de la mortalidad en las ciudades. Y de hecho, el objetivo a conseguir sería el contrario: ser capaz de movernos más rápido por las ciudades disminuyendo al mismo tiempo la mortalidad.
 
 
 ```{r}
@@ -192,14 +196,16 @@ fallecimientos_peaton %>%
 
 ```
 
-No se puede eludir la responsablidad de peatón en este asunto, puesto que tiene un papel fundamental.
+Y como conseguimos eso?
 
-Otro problema mas es que la siniestralidad no es igual en todas la ciudades y en todas las calles de España.
+* Siendo mucho más inteligentes y estudiando la causa raíz de las colisiones y abordándolas para minimizarlas o erradicarlas. Por ejemplo, vemos en el gráfico que el 61% de los atropellos mortales tuvieron como causa raíz la infracción de peatón. No se puede eludir la responsablidad de peatón en este asunto, puesto que tiene un papel fundamental.
+
 
 ```{r}
 master_provincias <- read_csv(file = "data_sources/master_provincias.csv")
 
 raw_data_1 %>% 
+  filter(TITULARIDAD_VIA == tit_via["municipal"], year == 2019) %>% 
   group_by(COD_PROVINCIA) %>% 
   summarize(across(ends_with(c("MU30DF", "MU24H")), sum)) %>% 
   left_join(master_provincias) %>% 
@@ -208,31 +214,33 @@ raw_data_1 %>%
   coord_flip() +
   xlab(NULL) + ylab(NULL) +
   labs(
-    title = "Atropellos mortales por provincia",
-    subtitle = "Datos de la DGT 2019 (cómputo de 24 horas)",
-    caption = "\nYouTube: Darckula - en busca de la verdad\nTwitter: @darckula" )
-
+    title = "Atropellos mortales por provincia"
+    , subtitle = "Datos de la DGT 2019 (cómputo de 24 horas)"
+    , caption = "\nYouTube: Darckula - en busca de la verdad\nTwitter: @darckula" )
 ```
 
-
+* Estudiando puntos calientes con una alta siniestralidad. La siniestralidad no es igual en todas la ciudades y en todas las calles de España.
 
 ## Factores mediamabientales
 
 * Contaminación:
   * Mas atascos
-  * no esta claro que se contamine menos a 30 que ha 50%
-  * vehiculos electricos
-  
+  * no esta claro que se contamine menos a 30 que ha 50
+  * vehiculos electricos (subvenciones y cargadores)
 
 * Ruido
   * revoluciones del motor
-  
 
 # Oportunidades recaudatorias
 
 
-  
+# Conclusiones
 
+* No garantiza la reducción de la mortalidad en ciudad ni tampoco erradica los puntos calientes
+* Deja sin protección al 50% de los atropellados (fuera de ciudad)
+* No parece que vayan a disminuir los niveles de contaminación acústica y medio ambiental
+* Pero nos hace más lentos
+* Y brindará oportunidades recaudatorias a las administraciones pudiendo regar nuestras calles de radares.
 
-
+En definitiva, es una ley que aplica la brocha gorda para un problema que requiere precisión de cirujano.
 
