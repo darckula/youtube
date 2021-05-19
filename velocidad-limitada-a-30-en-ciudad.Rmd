@@ -7,7 +7,7 @@ editor_options:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, message=F, warning=F, echo=FALSE)
+knitr::opts_chunk$set(echo = FALSE, message=F, warning=F)
 library(tidyverse)
 library(extrafont)
 theme_default <- theme_set(theme_light())
@@ -15,100 +15,140 @@ theme_update(
     text         = element_text(family = "Ubuntu")
   , plot.title   = element_text(size = 20)
   , axis.text    = element_text(size = 12)
-  , legend.text  = element_text(size = 12))
+  , legend.text  = element_text(size = 12)
+  , legend.position = "bottom", legend.title = element_blank()
+  , strip.background = element_rect(fill = "#FF00FF")
+  , strip.text = element_text(size = 12, color = "black", face = "bold"))
 
 ```
 
-* Entra en vigor: 11 Mayo 2021
-* 30 km/h para las calles con un único carril de circulación para cada sentido.
-* 20 km/h si entre los vehiculos y los peatones no hay diferencia de altura.
+# Intro
 
-# Razones:
+* 11 Mayo 2021
+* 50 km/h para calles de dos o más carriles para sentido de la circulación
+* 30 km/h para las calles con un único carril de circulación para cada sentido
+* 20 km/h si entre los vehiculos y los peatones no hay diferencia de altura
 
-* Reducir la siniestralidad vial
-* Reducir la calidad del aire
-* Distancia de frenado:
-  * 30 km/h se necesitan 15 metros - 10% lesion grave o mortal
-  * 50 km/h se necesitan 30 metros - 50% lesion grave o mortal
-* Teoria
+Segun la dgt, aprox. un 80% de la calles de España reducirán su velocidad de 50 Km/h a 30 km/h
 
-# Fallecidos
+# Razones
 
-* En España 418.703 personas murieron en 2019
-* 228 personas murieron atropelladas en ciudad
-* -0.05% de reducción de la mortalidad
+* Reducir la mortalidad
+* Aumentar la calidad del aire
+* Reducir el ruido ambiental
 
-# Consecuencias
+Los aytos ya tenian medios para limitar la velocidad!!
 
-* Mucha confusión
-* Estrés para el conductor
-* Mas atascos
-* Mas tiempo parados en los semáforos:
-  * más contaminacion
-  * más ruido
-* Afan recaudatorio
-  
+## Reducir la mortalidad
+
+En 2019, 1496 personas perdieron la vida por un acc. de trafico en Espana. Sin embargo, a pesar de lo tragico del dato, supone un descenso de la mortalidad por 2nd ano consecutivo (no se dispone de informacion en 2020). El numero de peatones fallecidos tambien disminuyo sensiblemente en 2019.
+
+```{r}
+tit_via = c("municipal" = 4)
+input_files <- paste0("data_sources/TABLA_ACCIDENTES_", 16:19, ".csv")
+input_files <- set_names(input_files, 2016:2019)
+raw_data <- map_dfr(input_files, read_csv, .id = "year")
+
+raw_data_1 <- 
+  raw_data %>% 
+  select(year, COD_PROVINCIA, COD_MUNICIPIO, TITULARIDAD_VIA, TIPO_VIA, TOTAL_MU30DF,
+         TOT_PEAT_MU30DF, TOTAL_MU24H, TOT_PEAT_MU24H)
+
+fallecidos <- 
+  raw_data_1 %>%
+  group_by(year) %>% 
+  summarize(across(ends_with(c("MU24H", "MU30DF")), sum))
+
+fallecidos %>% 
+  rename(TOTAL_FALLECIDOS = TOTAL_MU24H, PEATONES_FALLECIDOS = TOT_PEAT_MU24H) %>% 
+  pivot_longer(cols = c("TOTAL_FALLECIDOS", "PEATONES_FALLECIDOS")) %>%
+  ggplot() +
+  geom_line(aes(x = year, y = value, group = name)) +
+  geom_point(aes(x = year, y = value)) +
+  facet_wrap(facets = vars(name), scales = "free_y", strip.position = "top") +
+  xlab(NULL) + ylab(NULL) +
+  labs(
+    title = "Serie historica de fallecimientos por accidente de tráfico"
+    , subtitle = "Datos de la DGT (cómputo 24 horas)"
+    , caption = "\nYouTube: Darckula - en busca de la verdad\nTwitter: @darckula" 
+  )
+```
+
+En cambio, el numero de peatones que perdieron la vida por un atropello en ciudad ascendio en 2019 en 10 personas, llegando hasta los 162. Este incremento es el 6% que la DGT esgrime como justifacion para la reduccion de los limites de velocidad.
+
+```{r}
+
+fallecidos_ciudad <- 
+  raw_data_1 %>%
+  filter(TITULARIDAD_VIA == tit_via["municipal"]) %>% 
+  group_by(year, TITULARIDAD_VIA) %>% 
+  summarize(across(ends_with(c("MU24H", "MU30DF")), sum))
+
+
+fallecidos_ciudad %>% 
+  rename(TOTAL_FALLECIDOS = TOTAL_MU24H, PEATONES_FALLECIDOS = TOT_PEAT_MU24H) %>% 
+  pivot_longer(cols = c("TOTAL_FALLECIDOS", "PEATONES_FALLECIDOS")) %>%
+  ggplot() +
+  geom_line(aes(x = year, y = value, group = name)) +
+  geom_point(aes(x = year, y = value)) +
+  facet_wrap(facets = vars(name), scales = "free_y", strip.position = "top") +
+  xlab(NULL) + ylab(NULL) +
+  labs(
+    title = "Serie historica de fallecimientos EN CIUDAD por accidente de tráfico"
+    , subtitle = "Datos de la DGT (cómputo 24 horas)"
+    , caption = "\nYouTube: Darckula - en busca de la verdad\nTwitter: @darckula" 
+  )
+```
+
+
+En cuanto a la distribucion por lugar donde se produjeron los atropellos mortales (ciudad o fuera de ciudad), el siguiente grafico muestra un reparto casi al 50%, con una ligera tendencia hacia la ciudad. Las medidas que ha impuesto el gobierno se centrarian en reducir la mortalidad dentro de la ciudades, pero dejaria sin abordar casi el otro 50% del problema.
 
 
 ```{r}
-acc_trafico <- tribble(
-  ~zona, ~victimas, ~fallecidos,
-  "vias interurbanas", 900, 134,
-  "travesias", 254, 19,
-  "calles", 13248, 228
-)
 
-acc_trafico <- 
-  acc_trafico %>%
-  mutate(
-    ratio        = 100*fallecidos/victimas,
-    no_fallecidos = victimas - fallecidos)
-
-acc_trafico <- 
-  acc_trafico %>% 
-    pivot_longer(
-      cols = c(fallecidos, no_fallecidos),
-      names_to = "tipo",
-      values_to = "num_personas")
-
-acc_trafico %>% 
-  ggplot(aes(x=zona, y=num_personas, fill=tipo)) +
-  geom_bar(position = "dodge", stat = "identity") +
-  scale_fill_brewer(palette = 3, type = "qual", direction = -1) +
-  geom_text(aes(label = num_personas)
-            , position = position_dodge(width = 1)
-            , colour = "black"
-            , family = "Ubuntu"
-            , vjust = 0
-            , hjust = "center"
-            , size = 5) +
-  xlab(NULL) +
-  ylab(NULL) +
+raw_data_1 %>%
+  group_by(year, CIUDAD = case_when(
+      TITULARIDAD_VIA == tit_via["municipal"] ~ "Ciudad"
+    , TRUE ~ "Fuera Ciudad")) %>%
+  summarize(across(ends_with(c("MU30DF", "MU24H")), sum)) %>% 
+  group_by(year) %>% 
+  mutate(pct = round(100 * TOT_PEAT_MU24H / sum(TOT_PEAT_MU24H))) %>%  
+  ggplot(aes(x = year, y = TOT_PEAT_MU24H, fill = CIUDAD)) +
+  geom_col() +
+  geom_text(aes(label = paste0(pct, "%")), position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = 3, type = "seq", direction = 1) +
+    xlab(NULL) + ylab(NULL) +
   labs(
-    title = "Peatones víctimas de accidentes de tráfico",
-    subtitle = "Datos de la DGT 2019",
-    caption = "Twitter: @darckula") +
-  scale_y_log10() +
-  theme(legend.position = "bottom", legend.title = element_blank())
+    title = "Distribución historica de fallecimientos por accidente de tráfico"
+    , subtitle = "Datos de la DGT (cómputo 24 horas)"
+    , caption = "\nYouTube: Darckula - en busca de la verdad\nTwitter: @darckula" 
+  )
+  
 
-acc_trafico %>% 
-  ggplot(aes(x=zona, y=num_personas, fill=tipo)) +
-  geom_bar(position = "fill", stat = "identity") +
-  scale_fill_brewer(palette = 3, type = "qual", direction = -1) +
-  geom_text(aes(y = 0.75, label = paste(round(ratio,2), "%"))
-            , colour = "blue4"
-            , family = "Ubuntu"
-            , size = 8) +
-  xlab(NULL) +
-  ylab(NULL) +
-  labs(
-    title = "Proporción de la mortalidad en atropellos a peatones",
-    subtitle = "Datos de la DGT 2019",
-    caption = "Twitter: @darckula") +
-  scale_y_continuous(labels = c("0%", "25%", "50%", "75%", "100%")) +
-  theme(legend.position = "bottom", legend.title = element_blank())
+```
+
+Problemas
+
+Centrandonos en los atropellos en vias urbanas, el argumento que maneja la DGT para justificar la reduccion de la velocidad son:
+
+* Disminucion distancia de frenado:
+  * 30 km/h se necesitan 15 metros
+  * 50 km/h se necesitan 30 metros
+* Disminucion de probabilidad de lession grave o mortal:
+  * 50 km/h - 50%
+  * 30 km/h - 10%
+* Pero esto es pura teoria:
+  * tiempo de reacción
+  * el tipo de vehículo y estado de conservación
+
+Ademas, pone el foco en evitar lesiones una vez producido el atropello en vez de tratar de evitarlo, para lo cual debemos estudiar la causa de la colision:
+* baja visibilidad
+* no respetar pazo de cebra o semaforo
+* invadir la calzada de forma inadvertida
+* en general, se ha infringido alguna norma?
 
 
+```{r}
 fallecimientos_peaton <- tribble(
   ~año, ~zona, ~infraccion, ~no_infraccion, ~desconocido,
   2019, "vias interurbanas", 92, 18, 24,
@@ -122,24 +162,6 @@ fallecimientos_peaton <-
         cols = c(infraccion, no_infraccion, desconocido)
       , names_to = "tipo"
       , values_to = "fallecidos")
-
-fallecimientos_peaton %>% 
-  ggplot(aes(zona, fallecidos, fill=tipo)) +
-  geom_col(position = "dodge") +
-  scale_fill_brewer(palette = 3, type = "seq", direction = 1) +
-  geom_text(aes(label = fallecidos)
-            , position = position_dodge(width = 1)
-            , vjust = "bottom"
-            , colour = "black"
-            , family = "Ubuntu"
-            , size = 5) +
-  xlab(NULL) +
-  ylab(NULL) +
-  labs(
-    title = "Infracciones en atropellos mortales a peatones",
-    subtitle = "Datos de la DGT 2019",
-    caption = "Twitter: @darckula") +
-  theme(legend.position = "bottom", legend.title = element_blank())
 
 text_to_show <- 
   fallecimientos_peaton %>%
@@ -157,8 +179,8 @@ fallecimientos_peaton %>%
   ylab(NULL) +
   labs(
     title = "Atropellos mortales a peatones",
-    subtitle = "Datos de la DGT 2019",
-    caption = "Twitter: @darckula") +
+    subtitle = "Datos de la DGT 2019 (cómputo de 30 días)",
+    caption = "\nYouTube: Darckula - en busca de la verdad\nTwitter: @darckula" ) +
   theme(legend.position = "bottom", legend.title = element_blank()) +
   geom_text(  data = text_to_show 
             , aes(x = tipo, y = fallecidos, label = paste0(fallecidos, " (", pct, "%)"))
@@ -167,24 +189,50 @@ fallecimientos_peaton %>%
             , colour = "black"
             , family = "Ubuntu"
             , size = 5)
+
 ```
 
-# Victimas por Ciudad
+No se puede eludir la responsablidad de peatón en este asunto, puesto que tiene un papel fundamental.
 
-* Solo hay 4 provincias con más 20 fallecidos 
-* Teruel, Salamanca y Melilla no presentan ningún fallecido
+Otro problema mas es que la siniestralidad no es igual en todas la ciudades y en todas las calles de España.
 
 ```{r}
-fallecidos_ciudad <- read_csv(file = "fallecidos_ciudad.csv")
+master_provincias <- read_csv(file = "data_sources/master_provincias.csv")
 
-fallecidos_ciudad %>%
-  filter(Provincia != "Total") %>% 
-  ggplot(aes(reorder(Provincia, Fallecidos_Ciudad), Fallecidos_Ciudad)) +
+raw_data_1 %>% 
+  group_by(COD_PROVINCIA) %>% 
+  summarize(across(ends_with(c("MU30DF", "MU24H")), sum)) %>% 
+  left_join(master_provincias) %>% 
+  ggplot(aes(reorder(PROVINCIA, TOT_PEAT_MU24H), TOT_PEAT_MU24H)) +
   geom_col(fill = "#FF00FF") +
   coord_flip() +
   xlab(NULL) + ylab(NULL) +
   labs(
-    title = "Accidentes mortales por provincia (incluye peatones y conductores)",
-    subtitle = "Datos de la DGT 2019",
-    caption = "Twitter: @darckula")
+    title = "Atropellos mortales por provincia",
+    subtitle = "Datos de la DGT 2019 (cómputo de 24 horas)",
+    caption = "\nYouTube: Darckula - en busca de la verdad\nTwitter: @darckula" )
+
 ```
+
+
+
+## Factores mediamabientales
+
+* Contaminación:
+  * Mas atascos
+  * no esta claro que se contamine menos a 30 que ha 50%
+  * vehiculos electricos
+  
+
+* Ruido
+  * revoluciones del motor
+  
+
+# Oportunidades recaudatorias
+
+
+  
+
+
+
+
