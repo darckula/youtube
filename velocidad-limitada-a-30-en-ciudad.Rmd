@@ -1,7 +1,7 @@
 ---
 title: "Nuevos límites de velocidad en España"
 date: "`r Sys.Date()`"
-output: html_document
+output: github_document
 editor_options: 
   chunk_output_type: console
 ---
