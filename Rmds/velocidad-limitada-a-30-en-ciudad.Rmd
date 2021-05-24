@@ -11,7 +11,7 @@ editor_options:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, message=F, warning=F)
+knitr::opts_chunk$set(echo = FALSE, message=F, warning=F, fig.path = "../charts/")
 library(tidyverse)
 library(extrafont)
 theme_default <- theme_set(theme_light())
@@ -197,7 +197,6 @@ fallecimientos_peaton %>%
 ```
 
 Y como conseguimos eso? Pues siendo mucho más inteligentes y estudiando la causa raíz de las colisiones, para abordarlas, minimizarlas o erradicarlas. Por ejemplo, vemos en el gráfico que el 61% de los atropellos mortales tuvieron como causa raíz la infracción de peatón. No se puede eludir la responsablidad de peatón en este asunto, puesto que tiene un papel fundamental. Consecuentemente, llevar a cabo un estudio que ayude a determinar qué llevo a casi el 50% de los transeúntes a cometer una infracción que les costó la vida, me parece más adecuado. El problema es que este estudio dará como conclusiones, muy previsiblemente, que hay que invertir dinero que mejorar ciertos pasos de cebra, iluminar algunos cruces, instalar bolardos o barandillas, aumentar la senalización de algunos puntos o incluso llevar a cabo programas de educación vial. **Y digo "el problema" porque este resultado indicará que hay gastar (invertir) en vez proporcionar oportunidades de recaudar a la administración mediante la instalación de radares que cacen a los conductores distraidos.**
-
 
 ```{r, fig.height=10}
 master_provincias <- read_csv(file = "../data_sources/master_provincias.csv")
