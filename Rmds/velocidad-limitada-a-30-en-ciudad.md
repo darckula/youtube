@@ -34,7 +34,7 @@ por razones de seguridad o incluso ambientales.
 
 ## Razón 1: Reducir la mortalidad
 
-![](/home/juan/Repos/darckula/velocidad-limitada-a-30-en-ciudad_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
+![](velocidad-limitada-a-30-en-ciudad_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
 
 En 2019, 1.496 personas perdieron la vida por un accidente de tráfico en
 España. Esta cifra es la más baja desde 2016 y supone un descenso del
@@ -44,7 +44,7 @@ peatones atropellados mortalmente también sufrió un descenso en 2019 del
 5.21%. Estos datos marcan, por tanto, una tendencia positiva en la lucha
 contra la mortalidad en carretera.
 
-![](/home/juan/Repos/darckula/velocidad-limitada-a-30-en-ciudad_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+![](velocidad-limitada-a-30-en-ciudad_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
 
 En cambio, el número de peatones que perdieron la vida por un atropello
 en ciudad ascendio un 6% (10 personas) en 2019, llegando hasta los 162
@@ -52,7 +52,7 @@ fallecidos. Este incremento es usado por el gobierno para justificar la
 reducción de los limites de velocidad en ciudad. Pero, ¿qué hay de
 cierto en ello?
 
-![](/home/juan/Repos/darckula/velocidad-limitada-a-30-en-ciudad_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+![](velocidad-limitada-a-30-en-ciudad_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
 
 Si los limites de velocidad se establecen para salvar vidas en ciudad,
 quedarán excluídos de la protección de esta ley los peatones
@@ -91,7 +91,7 @@ de movernos más rápido por las ciudades disminuyendo al mismo tiempo la
 mortalidad.**. Eso es el progreso, el avanze como sociedad. Lo contrario
 es dar pasos hacia atrás y deshacer el camino andado.
 
-![](/home/juan/Repos/darckula/velocidad-limitada-a-30-en-ciudad_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+![](velocidad-limitada-a-30-en-ciudad_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
 Y como conseguimos eso? Pues siendo mucho más inteligentes y estudiando
 la causa raíz de las colisiones, para abordarlas, minimizarlas o
@@ -110,7 +110,7 @@ resultado indicará que hay gastar (invertir) en vez proporcionar
 oportunidades de recaudar a la administración mediante la instalación de
 radares que cacen a los conductores distraidos.**
 
-![](/home/juan/Repos/darckula/velocidad-limitada-a-30-en-ciudad_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+![](velocidad-limitada-a-30-en-ciudad_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
 Otro aspecto que no se puede obviar, \*es que **la mortalidad en
 atropellos no es igual en toda España**. Como se puede ver en el gráfico
@@ -125,49 +125,27 @@ medias que a adoptado el Gobierno en toda España.
 ## Razón 2: Aumentar la calidad de aire
 
 Como hemos dicho anteriormente, el 80% de las calles de país reducirán
-su velocidad a 30% km/h. Como consecuencia, **los vehículos estarán más
-tiempo en tránsito (un 40% más) y los motores más tiempo en marcha
-emitiendo sustancias contaminantes**. Por tanto, aunque se contamine
-menos se contamina durante más tiempo. De hecho, los expertos en
-automóviles no tienen claro de si se contaminará menos con esta medida.
+su velocidad a 30% km/h. Como consecuencia, los vehículos estarán más
+tiempo en tránsito, es decir, los motores más tiempo en marcha emitiendo
+CO\_2. \* Contaminación: \* Mas atascos \* no esta claro que se
+contamine menos a 30 que ha 50 \* vehiculos electricos (subvenciones y
+cargadores)
 
-Por el contrario, sí que hay consenso en que para eliminar (no reducir)
-las emisiones **hay que apostar por motores no contaminantes**, como los
-motores eléctricos. Esto implica subvencionar la compra de estos
-vehículos, bajar impuestos, facilitar el uso de bicicletas y patines
-electrícos y regular para dar seguridad jurídia a la compra y uso de
-estos vehículos.
+-   Ruido
+    -   revoluciones del motor
 
-## Razón 3: Reducir el ruido ambiental
-
-Similarmente, el ruido ambiental está más relacionado con la aleceración
-del vehículo (y el aumento de sus revoluciones) que con la diferencia de
-velocidad entre 30 y 50 km/h. Las marchas, el tipo de vehículo, su
-tamaño, el tipo de motor, etc. juegan un papel fundamental. Y no digamos
-la impaciencia de los conductores al permanecer más tiempo atascados y
-empezar a tocar el claxón, que si bien yo no lo justifo, lo reconozco
-como un hecho.
-
-## Razón 4: Oportunidades recaudatorias
-
-Como ya he dicho durante el desarrollo de los argumentos, limitar la
-velocidad da una potente oportunidad a la administración de aumentar su
-recaudación multando a los conductores más despistados. Sólo hay que
-invertir en instalar radares de velocidad y esperar a que hagan su
-trabajo.
+# Oportunidades recaudatorias
 
 # Conclusiones
-
-Mi opinión sobre esta reducción de velocidad se resume en:
 
 -   No garantiza la reducción de la mortalidad en ciudad ni tampoco
     erradica los puntos calientes
 -   Deja sin protección al 50% de los atropellados (fuera de ciudad)
 -   No parece que vayan a disminuir los niveles de contaminación
-    acústica ni medio ambiental
--   Hace que nos desplacemos más lentos
+    acústica y medio ambiental
+-   Pero nos hace más lentos
 -   Y brindará oportunidades recaudatorias a las administraciones
     pudiendo regar nuestras calles de radares.
 
-En definitiva, **es una ley que aplica la brocha gorda para un problema
-que requiere precisión de cirujano.**
+En definitiva, es una ley que aplica la brocha gorda para un problema
+que requiere precisión de cirujano.
