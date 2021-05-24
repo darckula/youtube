@@ -1,4 +1,4 @@
-Nuevos límites de velocidad en España
+001-Nuevos límites de velocidad en España
 ================
 Darckula
 2021-05-24
@@ -34,7 +34,7 @@ por razones de seguridad o incluso ambientales.
 
 ## Razón 1: Reducir la mortalidad
 
-![](../charts/unnamed-chunk-1-1.png)<!-- -->
+![](001-nuevos-limites-de-velocidad-en-Espana_files/figure-gfm/reducir-mortalidad-1.png)<!-- -->
 
 En 2019, 1.496 personas perdieron la vida por un accidente de tráfico en
 España. Esta cifra es la más baja desde 2016 y supone un descenso del
@@ -44,7 +44,7 @@ peatones atropellados mortalmente también sufrió un descenso en 2019 del
 5.21%. Estos datos marcan, por tanto, una tendencia positiva en la lucha
 contra la mortalidad en carretera.
 
-![](../charts/unnamed-chunk-2-1.png)<!-- -->
+![](001-nuevos-limites-de-velocidad-en-Espana_files/figure-gfm/reducir-mortalidad-ciudad-1.png)<!-- -->
 
 En cambio, el número de peatones que perdieron la vida por un atropello
 en ciudad ascendio un 6% (10 personas) en 2019, llegando hasta los 162
@@ -52,7 +52,7 @@ fallecidos. Este incremento es usado por el gobierno para justificar la
 reducción de los limites de velocidad en ciudad. Pero, ¿qué hay de
 cierto en ello?
 
-![](../charts/unnamed-chunk-3-1.png)<!-- -->
+![](001-nuevos-limites-de-velocidad-en-Espana_files/figure-gfm/peatones-localizacion-1.png)<!-- -->
 
 Si los limites de velocidad se establecen para salvar vidas en ciudad,
 quedarán excluídos de la protección de esta ley los peatones
@@ -91,7 +91,7 @@ de movernos más rápido por las ciudades disminuyendo al mismo tiempo la
 mortalidad.**. Eso es el progreso, el avanze como sociedad. Lo contrario
 es dar pasos hacia atrás y deshacer el camino andado.
 
-![](../charts/unnamed-chunk-4-1.png)<!-- -->
+![](001-nuevos-limites-de-velocidad-en-Espana_files/figure-gfm/peatones-infraccion-1.png)<!-- -->
 
 Y como conseguimos eso? Pues siendo mucho más inteligentes y estudiando
 la causa raíz de las colisiones, para abordarlas, minimizarlas o
@@ -110,7 +110,7 @@ resultado indicará que hay gastar (invertir) en vez proporcionar
 oportunidades de recaudar a la administración mediante la instalación de
 radares que cacen a los conductores distraidos.**
 
-![](../charts/unnamed-chunk-5-1.png)<!-- -->
+![](001-nuevos-limites-de-velocidad-en-Espana_files/figure-gfm/dist-provincia-1.png)<!-- -->
 
 Otro aspecto que no se puede obviar, \*es que **la mortalidad en
 atropellos no es igual en toda España**. Como se puede ver en el gráfico
